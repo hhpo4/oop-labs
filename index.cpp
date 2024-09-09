@@ -1,60 +1,73 @@
-#include <iostream>
-#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-using namespace std; 
-
+#define MAX_SITES 4
+#define MAX_NAME_LENGTH 50
+#define MAX_TYPE_LENGTH 50
+#define MAX_DOMAIN_LENGTH 50
+#define MAX_TECHNOLOGIES 50
 
 struct Site {
-    char name[50];      
-    char type[50];        
-    char domain[50];    
-    int users;            
-    int linked;             
-    double time;             
-    vector<> technologies; 
+    char name[MAX_NAME_LENGTH];
+    char type[MAX_TYPE_LENGTH];
+    char domain[MAX_DOMAIN_LENGTH];
+    int users;
+    int linked;
+    double time;
+    char technologies[MAX_TECHNOLOGIES][MAX_TYPE_LENGTH];
 };
 
 int main() {
-    std::vector<Site> sites = {
-        {"Google", "Поисковый", "google.com", 2000000000, 1000, 0.5, {"HTML", "JavaScript", "CSS"}},
-        {"Wikipedia", "Информационный", "wikipedia.org", 500000000, 2500, 0.7, {"HTML", "PHP"}},
-        {"Bing", "Поисковый", "bing.com", 100000000, 800, 0.6, {"HTML", "JavaScript"}},
-        {"Yandex", "Поисковый", "yandex.ru", 150000000, 600, 0.4, {"HTML", "Python"}}
+    struct Site sites[MAX_SITES] = {
+        {
+            "Google", "Поисковый", "google.com", 1000000000, 100000, 0.1, 
+            {"HTML", "CSS", "JavaScript"}
+        },
+        {
+            "Bing", "Поисковый", "bing.com", 500000000, 50000, 0.2,
+            {"HTML", "CSS", "JavaScript"}
+        },
+        {
+            "Wikipedia", "Информационный", "wikipedia.org", 200000000, 1000000, 0.3,
+            {"HTML", "CSS", "JavaScript"}
+        },
+        {
+            "Amazon", "Торговый", "amazon.com", 300000000, 500000, 0.4,
+            {"HTML", "CSS", "JavaScript"}
+        },
     };
 
-    // 1) Найдем доменное имя самого быстрого поискового интернет-сервиса
-    std::string fastestSearchDomain;
-    double fastestSearchTime = std::numeric_limits<double>::max(); // Начальное значение
-
-    for (const auto& site : sites) {
-        if (site.type == "Поисковый" && site.time < fastestSearchTime) {
-            fastestSearchTime = site.time;
-            fastestSearchDomain = site.domain;
+    struct Site fastestSearch = sites[0];
+    for (int i = 0; i < MAX_SITES; i++) {
+        if (strcmp(sites[i].type, "Поисковый") == 0 && sites[i].time < fastestSearch.time) {
+            fastestSearch = sites[i];
         }
     }
+    printf("Доменное имя самого быстрого поискового сервиса: %s\n", fastestSearch.domain);
 
-    if (!fastestSearchDomain.empty()) {
-        std::cout << "Доменное имя самого быстрого поискового интернет-сервиса: " << fastestSearchDomain << std::endl;
-    }
-
-    // 2) Вывод информации о интернет-ресурсах с количеством пользователей больше заданного
     int minUsers;
-    std::cout << "Введите минимальное количество пользователей в день: ";
-    std::cin >> minUsers;
+    printf("Введите минимальное число пользователей в день: ");
+    scanf("%d", &minUsers);
 
-    std::cout << "Интернет-ресурсы с более чем " << minUsers << " пользователями в день:" << std::endl;
-
-    for (const auto& site : sites) {
-        if (site.users > minUsers) {
-            std::cout << "Название: " << site.name << ", Тип: " << site.type 
-                      << ", Домен: " << site.domain << ", Пользователи: " << site.users 
-                      << ", Ссылки: " << site.linked << ", Время загрузки: " 
-                      << site.time << " сек, Технологии: ";
-
-            for (const auto& tech : site.technologies) {
-                std::cout << tech << " ";
+    printf("Информация о ресурсах с числом пользователей больше %d:\n", minUsers);
+    for (int i = 0; i < MAX_SITES; i++) {
+        if (sites[i].users > minUsers) {
+            printf("Название: %s\n", sites[i].name);
+            printf("Тип: %s\n", sites[i].type);
+            printf("Домен: %s\n", sites[i].domain);
+            printf("Пользователи: %d\n", sites[i].users);
+            printf("Ссылки: %d\n", sites[i].linked);
+            printf("Время загрузки: %.1f сек.\n", sites[i].time);
+            printf("Технологии: ");
+            for (int j = 0; j < MAX_TECHNOLOGIES; j++) {
+                if (strlen(sites[i].technologies[j]) > 0) {
+                    printf("%s ", sites[i].technologies[j]);
+                } else {
+                    break;
+                }
             }
-            std::cout << std::endl;
+            printf("\n\n");
         }
     }
 
