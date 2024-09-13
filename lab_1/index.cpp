@@ -1,6 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std; 
 
 #define MAX_SITES 4
 #define MAX_NAME_LENGTH 50
@@ -38,6 +40,20 @@ int main() {
         },
     };
 
+    for (int i = 0; i < MAX_SITES; i++) {
+        printf("Название: %s\n", sites[i].name);
+        printf("Тип: %s\n", sites[i].type);
+        printf("Домен: %s\n", sites[i].domain);
+        printf("Пользователи: %d\n", sites[i].users);
+        printf("Ссылки: %d\n", sites[i].linked);
+        printf("Время загрузки: %.1f сек.\n", sites[i].time);
+        printf("Технологии: ");
+        for (int j = 0; j < MAX_TECHNOLOGIES; j++) {
+            printf("%s ", sites[i].technologies[j]);
+        }
+        printf("\n\n");
+    }
+
     struct Site fastestSearch = sites[0];
     for (int i = 0; i < MAX_SITES; i++) {
         if (strcmp(sites[i].type, "Поисковый") == 0 && sites[i].time < fastestSearch.time) {
@@ -45,6 +61,7 @@ int main() {
         }
     }
     printf("Доменное имя самого быстрого поискового сервиса: %s\n", fastestSearch.domain);
+    printf("\n\n");
 
     int minUsers;
     printf("Введите минимальное число пользователей в день: ");
@@ -61,11 +78,7 @@ int main() {
             printf("Время загрузки: %.1f сек.\n", sites[i].time);
             printf("Технологии: ");
             for (int j = 0; j < MAX_TECHNOLOGIES; j++) {
-                if (strlen(sites[i].technologies[j]) > 0) {
-                    printf("%s ", sites[i].technologies[j]);
-                } else {
-                    break;
-                }
+                printf("%s ", sites[i].technologies[j]);
             }
             printf("\n\n");
         }
