@@ -3,3 +3,6 @@ Google,Поисковый,google.com,1000000000,100000,0.1,HTML,CSS,JavaScript
 Bing,Поисковый,bing.com,500000000,50000,0.2,HTML,CSS,JavaScript
 Wikipedia,Информационный,wikipedia.org,200000000,1000000,0.3,HTML,CSS,JavaScript
 Amazon,Торговый,amazon.com,300000000,500000,0.4,HTML,CSS,JavaScript
+,f,f,0,6420480,9.80432e-315
+,sf,df,0,6420480,9.80432e-315
+,f,f,4,4,434

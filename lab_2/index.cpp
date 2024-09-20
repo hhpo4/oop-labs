@@ -23,22 +23,50 @@ void readSitesFromFile(string filename, Site sites[]);
 void printSites(Site sites[]); 
 Site findFastestSearch(Site sites[]);
 void printSitesWithMinUsers(Site sites[], int minUsers);
+Site getSiteFromUser(void);
+void addSiteToFile(string filename, Site site);
+void deleteSiteFromFile(string filename, string siteName);
+
+
 
 int main() {
     Site* sites = new Site[MAX_SITES];
 
-    readSitesFromFile("websites.txt", sites);
-    
-    printSites(sites);
+    int mode;
+    cout << "Выбирите одно из действий: \nВывести все сайты в консоль - 1\nНайти самый быстрый поисковой сайт - 2\nВывести информацию о сайтах, в которых среднее число пользователей в день превышает заданную величину - 3\nДобавить сайт в файл - 4\nУдалить файл из сайта по имени - 5" << endl;
+    cin >> mode;
 
-    Site fastestSearch = findFastestSearch(sites);
-    cout << "Доменное имя самого быстрого поискового сервиса: " << fastestSearch.domain << endl << endl;
+    Site fastestSearch;
+    Site newSite;
 
-    int minUsers;
-    cout << "Введите минимальное число пользователей в день: ";
-    cin >> minUsers;
+    switch (mode) {
+        case 1: 
+            readSitesFromFile("websites.txt", sites);
+            printSites(sites);
+            break;
+        case 2: 
+            readSitesFromFile("websites.txt", sites);
 
-    printSitesWithMinUsers(sites, minUsers);
+            fastestSearch = findFastestSearch(sites);
+            cout << "Доменное имя самого быстрого поискового сервиса: " << fastestSearch.domain << endl << endl;
+            break;
+        case 3: 
+            readSitesFromFile("websites.txt", sites);
+
+            int minUsers;
+            cout << "Введите минимальное число пользователей в день: ";
+            cin >> minUsers;
+
+            printSitesWithMinUsers(sites, minUsers);
+            break;
+        case 4: 
+            newSite = getSiteFromUser();
+            addSiteToFile("websites.txt", newSite);
+            break;
+        default:
+            cout << "Введенно недопустимое значение" << endl;
+            break;
+    }
 
     delete[] sites;
 
@@ -131,5 +159,64 @@ void printSitesWithMinUsers(Site sites[], int minUsers) {
             }
             cout << endl;
         }
+    }
+}
+
+Site getSiteFromUser(void) {
+    Site site;
+
+    cout << "Введите имя сайта: " << endl;
+    cin.ignore();
+
+    cout << "Введите тип сайта: ";
+    getline(cin, site.type);
+    cin.ignore();
+
+    cout << "Введите доменное имя сайта: ";
+    getline(cin, site.domain);
+    cin.ignore();
+
+
+    cout << "Введите количество пользователей: ";
+    cin.ignore();
+    cin >> site.users;
+
+
+    cout << "Введите количество ссылок: ";
+    cin.ignore();
+    cin >> site.linked;
+
+    cout << "Введите время загрузки (в секундах): \n";
+    cin.ignore();
+    cin >> site.time;
+
+    cout << "Введите технологии (введите 'end' для завершения):" << endl;
+    for (int i = 0; i < MAX_TECHNOLOGIES; ++i) {
+        string tech;
+        getline(cin, tech);
+        if (tech == "end") {
+            break;
+        }
+        site.technologies[i] = tech;
+    }
+
+    return site;
+}
+
+
+void addSiteToFile(string filename, Site site) {
+    ofstream file(filename, ios_base::app); 
+
+    if (file.is_open()) {
+        file << site.name << "," << site.type << "," << site.domain << ","
+            << site.users << "," << site.linked << "," << site.time;
+        for (int i = 0; i < MAX_TECHNOLOGIES && !site.technologies[i].empty(); ++i) {
+            file << "," << site.technologies[i];
+        }
+        file << endl;
+        file.close();
+        cout << "Сайт добавлен: " << site.name << endl;
+    } else {
+        cout << "Не удалось открыть файл для записи." << endl;
     }
 }
