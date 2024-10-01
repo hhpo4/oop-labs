@@ -2,7 +2,8 @@
 #include <cstdlib> 
 #include <string> 
 #include <iostream>
-#include <fstream> 
+#include <fstream>
+#include <locale> 
 
 using namespace std; 
 
@@ -16,62 +17,84 @@ struct rating {
     int mark; 
 }; 
 
-int main() {
-    ifstream inputFile("input.txt"); 
+rating read_rating(ifstream &file) {
+    rating rate;
+    getline(file, rate.FIO); 
+    file >> rate.number;
+    file.ignore();
+    getline(file, rate.speciality); 
+    file >> rate.group;
+    file.ignore();
+    getline(file, rate.course);
+    file >> rate.semester;
+    file >> rate.mark;
+    file.ignore();
+    return rate;
+}
+
+void print_rating(rating rate)
+{
+cout << " фио:" << rate.FIO << endl;
+cout << " Номер студака: " << rate.number << endl;
+cout << " название специальности: " << rate.speciality << endl;
+cout << " номер группы: " << rate.group << endl;
+cout << " название дисцплины: " << rate.course << endl;
+cout << " номер семестра: " << rate.semester << endl;
+cout << " баллы: " << rate.mark << endl;
+}
+
+int main() { 
+    
     int N;
-    inputFile >> N;
-    inputFile.close();
+    ifstream infile;
+    infile.open("data.txt");
+    if (!infile.is_open()) {
+        cout << "Ошибка открытия файла!" << endl;
+        return 1; 
+    }
+    infile >> N;
+    infile.get(); 
 
     rating* student = new rating[N];
 
-    ifstream dataFile("data.txt");
     for (int i = 0; i < N; i++) {
-        dataFile >> student[i].FIO >> student[i].number >> student[i].speciality >> student[i].group >> student[i].course >> student[i].semester >> student[i].mark;
-    }
-    dataFile.close();
-
-    int found = 0;
-    int semes;
-
-    cout << "Введите номер семестра: ";
-    cin >> semes;
-
-    cout << "Студенты, получившие <60: ";
-    for (int i = 0; i < N; i++) {
-        if (student[i].mark < 60 && student[i].semester == semes) {
-            cout << student[i].FIO << " ";
-            found = 1;
-        }
+        student[i] = read_rating(infile); 
     }
 
-    if (!found) {
-        cout << "Таких нет";
-    }
+    infile.close(); 
 
-    cout << "\nСтудент с самой большой итоговой оценкой: ";
-    int max_ocenka = 0;
+    for (int i = 0; i < N; i++)
+        print_rating(student[i]);
 
-    for (int i = 1; i < N; i++) {
-        if (student[i].mark > student[max_ocenka].mark) {
-            max_ocenka = i; 
-        }
-    }
+    int found=0; 
+    int semes; 
 
-    cout << student[max_ocenka].FIO << endl;
+    cout << "введите номер семестра:"; 
+    cin >> semes; 
 
-    ofstream outputFile("output.txt");
-    for (int i = 0; i < N; i++) {
-        outputFile << "\n\nФИО: " << student[i].FIO << "\n";
-        outputFile << "Номер студака: " << student[i].number << "\n";
-        outputFile << "Название специальности: " << student[i].speciality << "\n";
-        outputFile << "Номер группы: " << student[i].group << "\n";
-        outputFile << "Название дисциплины: " << student[i].course << "\n";
-        outputFile << "Семестр: " << student[i].semester << "\n";
-        outputFile << "Баллы: " << student[i].mark << "\n";
-    }
-    outputFile.close();
+    cout << "студенты получившие <60:"; 
+    for(int i=0;i<N;i++){ 
+        if(student[i].mark<60 && student[i].semester==semes){ 
+            cout << student[i].FIO << endl; 
+            found=1; 
+        } 
+    } 
+
+    if(!found){ 
+        cout << "таких нет" << endl;
+    } 
+
+    cout << "\n" << "студент с самой большой итоговой оценкой:"; 
+    int max_ocenka = 0; 
+
+    for(int i = 1; i < N; i++) { 
+        if(student[i].mark > student[max_ocenka].mark) { 
+            max_ocenka = i;  
+        } 
+    } 
+
+    cout << student[max_ocenka].FIO << endl; 
 
     delete[] student;
-
-    return 0;
+    return 0; 
 }

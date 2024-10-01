@@ -25,51 +25,64 @@ Site findFastestSearch(Site sites[]);
 void printSitesWithMinUsers(Site sites[], int minUsers);
 Site getSiteFromUser(void);
 void addSiteToFile(string filename, Site site);
-void deleteSiteFromFile(string filename, string siteName);
-
-
+void removeSiteFromFile(const string& filename, const string& siteName);
 
 int main() {
     Site* sites = new Site[MAX_SITES];
+    string siteName;
 
-    int mode;
-    cout << "Выбирите одно из действий: \nВывести все сайты в консоль - 1\nНайти самый быстрый поисковой сайт - 2\nВывести информацию о сайтах, в которых среднее число пользователей в день превышает заданную величину - 3\nДобавить сайт в файл - 4\nУдалить файл из сайта по имени - 5" << endl;
-    cin >> mode;
+    string command;
+    while (true) {
+        cout << "Выбирите одно из действий: \n"
+            << "Вывести все сайты в консоль - 1\n"
+            << "Найти самый быстрый поисковой сайт - 2\n"
+            << "Вывести информацию о сайтах, в которых среднее число пользователей в день превышает заданную величину - 3\n"
+            << "Добавить сайт в файл - 4\n"
+            << "Удалить сайт по имени - 5\n"
+            << "Введите 'end' для выхода." << endl;
+        cin >> command;
 
-    Site fastestSearch;
-    Site newSite;
-
-    switch (mode) {
-        case 1: 
-            readSitesFromFile("websites.txt", sites);
-            printSites(sites);
+        if (command == "end") {
             break;
-        case 2: 
-            readSitesFromFile("websites.txt", sites);
+        }
 
-            fastestSearch = findFastestSearch(sites);
-            cout << "Доменное имя самого быстрого поискового сервиса: " << fastestSearch.domain << endl << endl;
-            break;
-        case 3: 
-            readSitesFromFile("websites.txt", sites);
+        int mode = stoi(command);
+        Site fastestSearch;
+        Site newSite;
 
-            int minUsers;
-            cout << "Введите минимальное число пользователей в день: ";
-            cin >> minUsers;
-
-            printSitesWithMinUsers(sites, minUsers);
-            break;
-        case 4: 
-            newSite = getSiteFromUser();
-            addSiteToFile("websites.txt", newSite);
-            break;
-        default:
-            cout << "Введенно недопустимое значение" << endl;
-            break;
+        switch (mode) {
+            case 1: 
+                readSitesFromFile("websites.txt", sites);
+                printSites(sites);
+                break;
+            case 2: 
+                readSitesFromFile("websites.txt", sites);
+                fastestSearch = findFastestSearch(sites);
+                cout << "Доменное имя самого быстрого поискового сервиса: " << fastestSearch.domain << endl << endl;
+                break;
+            case 3: 
+                readSitesFromFile("websites.txt", sites);
+                int minUsers;
+                cout << "Введите минимальное число пользователей в день: ";
+                cin >> minUsers;
+                printSitesWithMinUsers(sites, minUsers);
+                break;
+            case 4: 
+                newSite = getSiteFromUser();
+                addSiteToFile("websites.txt", newSite);
+                break;
+            case 5:
+                cout << "Введите название сайта для удаления: ";
+                cin >> siteName;
+                removeSiteFromFile("websites.txt", siteName);
+                break;
+            default:
+                cout << "Введено недопустимое значение" << endl;
+                break;
+        }
     }
 
     delete[] sites;
-
     return 0;
 }
 
@@ -218,5 +231,33 @@ void addSiteToFile(string filename, Site site) {
         cout << "Сайт добавлен: " << site.name << endl;
     } else {
         cout << "Не удалось открыть файл для записи." << endl;
+    }
+}
+
+void removeSiteFromFile(const string& filename, const string& siteName) {
+    ifstream infile(filename);
+    ofstream outfile("temp.txt");
+    string line;
+
+    bool found = false;
+
+    while (getline(infile, line)) {
+        if (line.find(siteName) == string::npos) {
+            outfile << line << endl;
+        } else {
+            found = true;
+        }
+    }
+
+    infile.close();
+    outfile.close();
+
+    remove(filename.c_str());
+    rename("temp.txt", filename.c_str());
+
+    if (found) {
+        cout << "Сайт '" << siteName << "' успешно удален." << endl;
+    } else {
+        cout << "Сайт '" << siteName << "' не найден." << endl;
     }
 }
