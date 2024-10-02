@@ -1,4 +1,4 @@
-4
+3
 Google,Поисковый,google.com,1000000000,100000,0.1,HTML,CSS,JavaScript
 Bing,Поисковый,bing.com,500000000,50000,0.2,HTML,CSS,JavaScript
-Wikipedia,Информационный,wikipedia.org,200000000,1000000,0.3,HTML,CSS,JavaScript
+Wikipedia,Информационный,wikipedia.org,200000000,1000000,0.3,HTML,CSS,JavaScriptg,g,g,2,2,2,JS,HTML,CSS

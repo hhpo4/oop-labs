@@ -179,29 +179,25 @@ Site getSiteFromUser(void) {
     Site site;
 
     cout << "Введите имя сайта: " << endl;
-    cin.ignore();
+    cin.ignore(); // Игнорируем предыдущий ввод
+    getline(cin, site.name); // Добавьте это, если нужно
 
     cout << "Введите тип сайта: ";
     getline(cin, site.type);
-    cin.ignore();
 
     cout << "Введите доменное имя сайта: ";
     getline(cin, site.domain);
-    cin.ignore();
-
 
     cout << "Введите количество пользователей: ";
-    cin.ignore();
     cin >> site.users;
 
-
     cout << "Введите количество ссылок: ";
-    cin.ignore();
     cin >> site.linked;
 
     cout << "Введите время загрузки (в секундах): \n";
-    cin.ignore();
     cin >> site.time;
+
+    cin.ignore();
 
     cout << "Введите технологии (введите 'end' для завершения):" << endl;
     for (int i = 0; i < MAX_TECHNOLOGIES; ++i) {
@@ -217,8 +213,26 @@ Site getSiteFromUser(void) {
 }
 
 
+
 void addSiteToFile(string filename, Site site) {
-    ofstream file(filename, ios_base::app); 
+    ifstream infile(filename);
+    ofstream outfile("temp.txt");
+    string line;
+    int siteCount = 0;
+
+    getline(infile, line);
+    siteCount = stoi(line);
+
+    outfile << siteCount + 1 << endl;
+
+    while (getline(infile, line)) {
+        outfile << line << endl;
+    }
+
+    infile.close();
+    outfile.close();
+
+    ofstream file(filename, ios_base::app);
 
     if (file.is_open()) {
         file << site.name << "," << site.type << "," << site.domain << ","
@@ -232,6 +246,9 @@ void addSiteToFile(string filename, Site site) {
     } else {
         cout << "Не удалось открыть файл для записи." << endl;
     }
+
+    remove(filename.c_str());
+    rename("temp.txt", filename.c_str());
 }
 
 void removeSiteFromFile(const string& filename, const string& siteName) {
@@ -239,7 +256,13 @@ void removeSiteFromFile(const string& filename, const string& siteName) {
     ofstream outfile("temp.txt");
     string line;
 
+    int siteCount = 0;
     bool found = false;
+
+    getline(infile, line);
+    siteCount = stoi(line);
+
+    outfile << siteCount - 1 << endl;
 
     while (getline(infile, line)) {
         if (line.find(siteName) == string::npos) {
