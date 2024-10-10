@@ -179,8 +179,8 @@ Site getSiteFromUser(void) {
     Site site;
 
     cout << "Введите имя сайта: " << endl;
-    cin.ignore(); // Игнорируем предыдущий ввод
-    getline(cin, site.name); // Добавьте это, если нужно
+    cin.ignore();
+    getline(cin, site.name); 
 
     cout << "Введите тип сайта: ";
     getline(cin, site.type);
@@ -196,8 +196,6 @@ Site getSiteFromUser(void) {
 
     cout << "Введите время загрузки (в секундах): \n";
     cin >> site.time;
-
-    cin.ignore();
 
     cout << "Введите технологии (введите 'end' для завершения):" << endl;
     for (int i = 0; i < MAX_TECHNOLOGIES; ++i) {
@@ -220,6 +218,11 @@ void addSiteToFile(string filename, Site site) {
     string line;
     int siteCount = 0;
 
+    if (!infile.is_open() || !outfile.is_open()) {
+        cout << "Не удалось открыть файл." << endl;
+        return;
+    }
+
     getline(infile, line);
     siteCount = stoi(line);
 
@@ -232,24 +235,28 @@ void addSiteToFile(string filename, Site site) {
     infile.close();
     outfile.close();
 
-    ofstream file(filename, ios_base::app);
-
+    ofstream file("temp.txt", ios_base::app);
+    
     if (file.is_open()) {
         file << site.name << "," << site.type << "," << site.domain << ","
             << site.users << "," << site.linked << "," << site.time;
+
         for (int i = 0; i < MAX_TECHNOLOGIES && !site.technologies[i].empty(); ++i) {
             file << "," << site.technologies[i];
         }
         file << endl;
         file.close();
+        
+        remove(filename.c_str());
+        rename("temp.txt", filename.c_str());
+
         cout << "Сайт добавлен: " << site.name << endl;
     } else {
         cout << "Не удалось открыть файл для записи." << endl;
     }
-
-    remove(filename.c_str());
-    rename("temp.txt", filename.c_str());
 }
+
+
 
 void removeSiteFromFile(const string& filename, const string& siteName) {
     ifstream infile(filename);
