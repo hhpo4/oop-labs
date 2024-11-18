@@ -1,0 +1,2 @@
+google,searched,google.com,123123123,123123,123,js,html,css,end
+yandex,searched,yandex.ru,234234234,234234,234,php,css,ts,end
