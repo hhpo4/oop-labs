@@ -38,6 +38,7 @@ int main() {
             case 2:
                 for (const Site& site : sites) {
                     site.printToScreen();
+                    std::cout << std::endl;
                 }
                 break;
             case 3:
@@ -50,11 +51,33 @@ int main() {
                     site.writeToFile(FILE_NAME, true); 
                 }
                 break;
-            case 5:
-                for (Site& site : sites) {
-                    site.readFromFile(FILE_NAME);
+            case 5: {
+                std::ifstream infile(FILE_NAME);
+
+                if (!infile.is_open()) {
+                    std::cout << "Файл данных не найден!" << std::endl;
+                    system("pause");
+                    return 1;
                 }
+
+                Site *sites = new Site[siteCount];
+
+                for (int i = 0; i < siteCount; i++) {
+                    sites[i].readFromFile(infile);
+                }
+
+                infile.close();
+                std::cout << "Содержимое файла: " << std::endl;
+
+                for (int i = 0; i < siteCount; i++) {
+                    sites[i].printToScreen();
+                    std::cout << std::endl;
+                }
+
+                delete [] sites;
                 break;
+            }
+
             default:
                 std::cout << "Неверный ввод." << std::endl;
                 break;

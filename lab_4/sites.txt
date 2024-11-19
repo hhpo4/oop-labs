@@ -1,0 +1,10 @@
+Amazon,E-commerce,amazon.com,300000000,5000000,0.5,HTML,CSS,JavaScript,PHP,Python
+Facebook,Social Network,facebook.com,2000000000,100000000,0.2,HTML,CSS,JavaScript
+YouTube,Video Sharing,youtube.com,25000000,5000000,0.4,HTML,CSS,JavaScript,Python
+Instagram,Social Network,instagram.com,1500000000,75000000,0.25,HTML,CSS,JavaScript
+Twitter,Social Network,twitter.com,1000000000,500000000,0.15,HTML,CSS,JavaScript,PHP
+Netflix,Streaming Service,netflix.com,200000000,1000000,0.6,HTML,CSS,JavaScript
+Gmail,Email Service,gmail.com,1500000000,2000000,0.1,HTML,CSS,JavaScript,Python
+Stack Overflow,Q&A Site,stackoverflow.com,100000000,10000000,0.3,HTML,CSS,JavaScript
+GitHub,Code Hosting,github.com,70000000,5000000,0.4,HTML,CSS,JavaScript,Python
+Airbnb,Vacation Rentals,airbnb.com,200000000,1000000,0.5,HTML,CSS,JavaScript,PHP

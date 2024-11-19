@@ -113,7 +113,6 @@ void Site::readFromKeyboard() {
     }
 }
 
-
 void Site::readFromFile(std::ifstream& file) {
         std::string line;
         std::getline(file, line);
