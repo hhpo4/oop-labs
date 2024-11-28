@@ -13,7 +13,8 @@ public:
     SiteCollection(unsigned int maxSites, unsigned int numSites);
     ~SiteCollection();
 
-    void addSite(const Site& site);
+    void operator +=(const Site& site);
+    
     void removeSite(int index);
     void loadFromFile(const std::string& filename);
     void saveToFile(const std::string& filename);

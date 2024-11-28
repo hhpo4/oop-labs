@@ -14,7 +14,7 @@ SiteCollection::~SiteCollection() {
     delete[] sites;
 }
 
-void SiteCollection::addSite(const Site& site) {
+void SiteCollection::operator+=(const Site& site) {
     if (numSites < maxSites) {
         sites[numSites++] = site;
     } else {

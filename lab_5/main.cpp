@@ -35,7 +35,7 @@ int main() {
             case 1: {
                 Site newSite;
                 std::cin >> newSite;
-                sites.addSite(newSite);
+                sites += newSite;
                 std::cout << "Элемент добавлен: " << std::endl << newSite << std::endl;
                 break;
             }
