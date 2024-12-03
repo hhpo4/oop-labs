@@ -3,6 +3,7 @@
 #include <vector>
 
 #define FILE_NAME "sites.txt"
+#define FILE_NAME_BIN = "sites.bin"
 
 int main() {
     int siteCount;
@@ -20,6 +21,7 @@ int main() {
             << "Записать данные в текстовый файл - 3\n"
             << "Записать данные в бинарный файл - 4\n"
             << "Прочитать данные с файла - 5\n"
+            << "Найти самый быстрый сайт - 6\n"
             << "Введите 'end' для выхода." << std::endl;
         std::cin >> command;
 
@@ -48,7 +50,7 @@ int main() {
                 break;
             case 4:
                 for (const Site& site : sites) {
-                    site.writeToFile(FILE_NAME, true); 
+                    site.writeToFile("sites.bin", true); 
                 }
                 break;
             case 5: {
@@ -77,7 +79,18 @@ int main() {
                 delete [] sites;
                 break;
             }
+            case 6: {
+                Site fastestSite = sites[0];
 
+                for (int i = 0; i < siteCount; i++) {
+                    if (sites[i].getName() != ""  && sites[i].getTime() < fastestSite.getTime()) {
+                        fastestSite = sites[i];
+                    }
+                }
+
+                fastestSite.printToScreen();
+                break;
+            }
             default:
                 std::cout << "Неверный ввод." << std::endl;
                 break;

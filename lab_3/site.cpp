@@ -191,5 +191,4 @@ void Site::writeToFile(const std::string& filename, bool binary) const {
             std::cerr << "Не удалось открыть файл: " << filename << std::endl;
         }
     }
-    //обрезается первая буква второго записанного файла
 }

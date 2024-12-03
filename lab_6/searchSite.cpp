@@ -32,10 +32,6 @@ void SearchSite::setHasAI(bool hasAI) {
     this->hasAI = hasAI;
 }
 
-bool SearchSite::operator==(const SearchSite& anotherSearchSite) {
-
-}
-
 ostream& operator<<(ostream &stream, const SearchSite &anotherSearchSite) {
     stream << static_cast<const Site&>(anotherSearchSite);
     stream << "Технология поиска: " << anotherSearchSite.searchTechnology << endl;
